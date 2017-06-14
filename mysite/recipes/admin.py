@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.db.models import Sum, F
 # Register your models here.
 from django.contrib import admin
-from import_export import resources
 from django.contrib.auth.models import User
 # Register your models hesre.
 from .models import RecipeControl, RecipeIngredients, RecipeMixing

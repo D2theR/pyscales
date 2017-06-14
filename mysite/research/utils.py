@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import get_template, render_to_string
 
-from xhtml2pdf import pisa
+#from xhtml2pdf import pisa
 
 def link_callback(uri, rel):
     """
