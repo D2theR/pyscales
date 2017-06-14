@@ -1,6 +1,6 @@
 #!/bin/bash
 
-py_ver=3.4
+py_ver=3.5
 
 sudo apt-get -y install libpq-dev python3-dev zbar-tools
 
