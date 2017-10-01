@@ -2,6 +2,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
+from django.utils.html import format_html
 
 # Create your models here.
 
@@ -21,7 +22,12 @@ class CustomerProfile(models.Model):
 
     def __str__(self):
         return "%s | %s | %s | %s" % (self.name,self.customer_code,self.city,self.state_or_region)
-
+    
+    def address(self):
+        add_info = [self.name, self.address_line_1, self.address_line_2]
+        add_list = [i+'<br />' if len(i) is not 0 else '' for i in add_info]
+        return format_html("".join(add_list)+"{}, {} {}".format(self.city, self.state_or_region, self.zip_or_region_code))
+    
     class Meta:
         managed = True
         unique_together = (('name', 'customer_code'),)
@@ -37,7 +43,12 @@ class CustomerContacts(models.Model):
     email = models.EmailField(max_length=70, blank=True)
 
     def __str__(self):
-        return "%s | %s %s" % (self.company, self.first_name, self.last_name)
+        return "%s | %s %s" % (self.company, self.first_name, self.last_name )
+    def info(self):
+        info_list = [self.position, self.phone_number, self.email]
+        contact_list = [i+'<br />' if len(i) is not 0 else '' for i in info_list]
+        return format_html("{} {} <br />".format(self.first_name, self.last_name)+"".join(contact_list))
+
     class Meta:
         managed = True
         unique_together = (('company', 'first_name', 'last_name'),)

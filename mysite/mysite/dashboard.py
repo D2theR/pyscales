@@ -55,7 +55,7 @@ class CustomIndexDashboard(Dashboard):
 
         self.children.append(modules.AppList(
             _('Sales Portal'),
-            exclude=('django.contrib.*','chemicals.*', 'suppliers.*','recipes.*','research.*','orders.PurchaseOrder', 'inventory.*'),
+            exclude=('django.contrib.*','chemicals.*', 'suppliers.*','recipes.*','research.*','orders.PurchaseOrder','orders.PO_Item', 'inventory.*'),
         ))
 
         # append an app list module for "Administration"

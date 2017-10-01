@@ -1,8 +1,9 @@
 from numbers import Number
 from decimal import Decimal
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.db import models
-from django.db.models import Sum, Max, F
+from django.db.models import Sum, Max, F, Q
 from django.forms import ModelForm, Textarea
 from chemicals import models as items
 from customers import models as custmods
@@ -19,6 +20,8 @@ class RecipeControl(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True, editable=False)
     mixer_volume = models.DecimalField(verbose_name='Mixer Volume(L)', max_digits=16,decimal_places=3, blank=True, null=True)
     fill_factor = models.DecimalField(verbose_name='Fill %', max_digits=6,decimal_places=2,blank=True,null=True)
+    batch_adjust = models.DecimalField(verbose_name='Adjust', max_digits=6,decimal_places=2,blank=True,null=True, default=1)
+    
     def __str__(self):
         return "%s" % (self.recipe_name)
 
@@ -50,19 +53,13 @@ class RecipeControl(models.Model):
 
     
     def _get_finished_spg(self):
-        total = RecipeIngredients.objects.aggregate(Sum(F('recipe_weight')))
-        if total['recipe_weight__sum'] == 0 or None:
-            return "Error!"
-        if total['recipe_weight__sum'] is not None:
-            spg_calc = []
-            for i in RecipeIngredients.objects.filter(recipe_id=self.id).values():
-                spg = list(items.IngredientList.objects.filter(id=i['ingredient_id']).values_list('specific_gravity', flat=True))[0]
-                i['SPG'] = spg
-                grav_calc = round(i['recipe_weight']/i['SPG'],4)
-                i['GVC'] = grav_calc
-                spg_calc.append(i)
-                grav_total = sum(g['GVC'] for g in spg_calc)
-                return round(total['recipe_weight__sum']/grav_total, 3)
+        i = RecipeIngredients.objects.filter(recipe_id=self.id).prefetch_related('ingredient').all()
+        if len(i) == 0:
+            return 0
+        if len(i) > 0:
+            f = [x.percentage/x.SPG for x in i]
+            return round(100/sum(f),3)
+
     
     ### Calculated fields must be defined after their property method.
     batch_weight = property(_get_total)
@@ -73,11 +70,23 @@ class RecipeControl(models.Model):
         managed = True
         unique_together = (('id','recipe_name'),)
 
+class AllMethodCachingQueryset(models.query.QuerySet):
+    def all(self, get_from_cache=True):
+        if get_from_cache:
+            return self
+        else:
+            return self._clone()
+
+
+class AllMethodCachingManager(models.Manager):
+    def get_query_set(self):
+        return AllMethodCachingQueryset(self.model, using=self._db)
+
 class RecipeIngredients(models.Model):
     recipe = models.ForeignKey(RecipeControl, related_name='recipe')
     ingredient = models.ForeignKey(items.IngredientList, related_name='ingredient')
-    weight_tolerance = models.DecimalField(verbose_name="PPH Tolerance",max_digits=8, decimal_places=3, blank=True, null=False)
-    recipe_weight = models.DecimalField(verbose_name="PPH",max_digits=16, decimal_places=3, blank=True, null=True)
+    weight_tolerance = models.DecimalField(verbose_name="PPH Tolerance",max_digits=8, decimal_places=3, blank=True, null=False, default=round(Decimal(0.01),2))
+    recipe_weight = models.DecimalField(verbose_name="PPH",max_digits=16, decimal_places=3, blank=True, null=False)
 
     def __str__(self):
         return "%s" % (self.ingredient)
@@ -102,18 +111,30 @@ class RecipeIngredients(models.Model):
         if isinstance(spg[0], Decimal) == True:
             return round(spg[0], 3)
 
-    def ext_price(self):
-        p = list(items.ItemPricing.objects.filter(item_id=self.ingredient_id, best_price=True).values_list('price',flat=True))
+    def _ext_price(self):
+        p = items.ItemPricing.objects.filter(item_id=self.ingredient_id, best_price=True).values_list('price',flat=True)
         total = RecipeIngredients.objects.filter(recipe__id=self.recipe_id).aggregate(Sum(F('recipe_weight')))       
-        percent = self.recipe_weight/total['recipe_weight__sum']
-        print(p, total, percent, str(round(p*(percentage*100), 3)))
-        return None
+        
+        if total['recipe_weight__sum'] is None:
+            return str('0.00')
+        if isinstance(self.recipe_weight, Decimal) == True:
+            percent = self.recipe_weight/total['recipe_weight__sum']*100
+            price = (p[0]*percent)/100
+            return round(price,3)
+
+    def ingredient_notes_json(self):
+        pricing = items.ItemPricing.objects.filter(item_id=self.ingredient_id).values('packaging_type','unit_type','min_qty','max_qty', 'price', 'freight_type', 'fob_point', 'freight_cost', 'notes')[:5]
+        js = JsonResponse({'pricing': list(pricing)})
+        return js.content
+        
 
     ### Calculated fields
     percentage = property(_recipe_percent)
     item_price = property(_get_price)
     SPG = property(_get_spg)
-    #ext_price = property(_ext_price)
+    ext_price = property(_ext_price)
+
+    cache_all_method = AllMethodCachingQueryset()
     
     class Meta:
         verbose_name = 'Recipe Ingredient'
@@ -128,11 +149,13 @@ class RecipeMixing(models.Model):
     ('60ML','60" Mill'),
     ('75L-T','75L Tilt'),
     ('200MM-EXT','200mm Extruder'),
+    ('LAB-MIX','3.8L Lab Mixer'),
     ('LAB-EXT','Lab Extruder'),
     ('130L-LF','130L Littleford'),
     ('600L-LF','600L Littleford'),
     ('1200L-LF','1200L Littleford'),
     ('2000L-LF','2000L Littleford'),
+    ('DAY','Day Mixer'),
     ('HEN','Henschel'),
     ('DICE','Dicer'),
     ('OVEN','Oven'),
@@ -142,25 +165,21 @@ class RecipeMixing(models.Model):
     MATERIAL_FORMS = [
     ('PWDR','Powder'),
     ('SLAB','Polymeric Slab'),
+    ('PASTE','Paste'),
     ('5MM-CB','5mm Cubes'),
     ('3MM-PLT','3mm Pellets'),
     ('6MM-PLT','6mm Pellets'),
     ('LQD','Liquid'),
     ('OTHER','Other-See Notes')
     ]
-    ### Step incrementation for 
-    def step_nums():
-        n = RecipeMixing.objects.aggregate(Max('step'))
-        if n['step__max'] == None:
-            return 1
-        else:
-            return n['step__max']+1
 
     for_recipe = models.ForeignKey(RecipeControl, related_name='for_recipe')
-    step = models.IntegerField(unique=False, default=step_nums)
+    step = models.IntegerField(unique=False, default=1)
     category = models.CharField(max_length=64, blank=False, null=True, choices=MACHINE_LIST)
     step_form = models.CharField(max_length=64, blank=False, null=True, choices=MATERIAL_FORMS)
     mix_time = models.DecimalField(verbose_name="Mix Time(mins.)",max_digits=6, decimal_places=2, blank=True, null=True)
+    mix_temp = models.DecimalField(verbose_name="Mix Temp(F)",max_digits=6, decimal_places=2, blank=True, null=True)
+    mix_add = models.TextField(verbose_name="Mixing Order", blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -168,4 +187,16 @@ class RecipeMixing(models.Model):
 
     class Meta:
         verbose_name = 'Mixing Instruction'
+        managed = True
+
+class RecipePackaging(models.Model):
+    recipe_packed = models.ForeignKey(RecipeControl, related_name='recipe_packed')
+    qty_per_pkg = models.DecimalField(verbose_name='Qty/Package',max_digits=8, decimal_places=3,blank=True, null=True)
+    packaging_item = models.ForeignKey(items.IngredientList, limit_choices_to=Q(category='PKG')|Q(category="LBL"))
+    item_needed = models.DecimalField(verbose_name="Item/Package",max_digits=6, decimal_places=2, blank=True, null=True)
+
+    def __str__(self):
+        return "%s | %s" % (self.recipe_packed, self.packaging_item)
+
+    class Meta:
         managed = True

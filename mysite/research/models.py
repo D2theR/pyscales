@@ -1,9 +1,10 @@
 import os
 from django.db import models
 from django.db.models.signals import post_save, pre_save
-from mysite.settings import MEDIA_ROOT
+from django.utils.html import format_html, mark_safe
+from mysite.settings import MEDIA_ROOT, MEDIA_URL
 from django.db.models import Max, Sum, F
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from recipes import models as recs
 from customers import models as customer
@@ -30,10 +31,13 @@ class LabSample(models.Model):
 	for_customer = models.ForeignKey(customer.CustomerContacts, verbose_name='customer', related_name='for_customer')
 	category = models.CharField(max_length=64, blank=False, null=False, choices=[('QT','Quote'),('SM','Sample'),('SM-QT','Sample|Quote')])
 	requested_by = models.ForeignKey(customer.CustomerContacts, related_name='requested_by')
-	request_date = models.DateTimeField(auto_now_add=True)
+	# request_date = models.DateTimeField(auto_now_add=True)
+	request_date = models.DateField(blank=False, null=False)
 	date_sent = models.DateField(blank=True, null=True)
+	sample_mfg = models.DateField(verbose_name='Mfg. Date',blank=True, null=True)
 	qty_sent = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal(2.00))
-	project_hours = models.DurationField(blank=True)
+	project_hours = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal(2.00), blank=True, null=True)
+	#project_hours = models.DurationField(blank=True, default=timedelta(hours=2))
 	projected_volume = models.DecimalField(max_digits=8, decimal_places=2)
 	volume_interval = models.CharField(max_length=64, blank=False, null=False, choices=[('ORD','Per Order'),('MON','Per Month'),('YR','Per Year'),('OTH','Other|See Notes')])
 	material_application = models.TextField(verbose_name='End Application & Customer Info',blank=True, null=True)
@@ -42,6 +46,15 @@ class LabSample(models.Model):
 
 	def __str__(self):
 		return "%s | %s" % (self.lab_sample_number, self.lab_recipe)
+
+	def recipe_name(self):
+		ln = str(self.lab_recipe).split(' | ')
+		return "%s | %s " % (ln[0], ln[1])
+	
+	def _project_files(self):
+		name = self.lab_recipe
+		return format_html('<a href="/labsamples/{}_{}">Project Files</a>', self.lab_sample_number, str(self.lab_recipe).split(" | ")[1])
+	project_files = property(_project_files)
 
 	class Meta:
 		managed = True

@@ -1,0 +1,392 @@
+table.title-table tr td.logo{
+    width: 100%;
+}
+
+table.title-table {
+    width: 98%;
+    margin:2px auto;
+    font: bold 24px 'Helvetica';
+    font-weight: 900;
+    text-align: center;
+    background: url(/static/images/admin-tools.png) 0 0 repeat;
+    background-position-y: -2px;
+    background-size: 26px auto;
+    border: 1px solid #000;
+    border-radius: 6px;
+}
+
+td.title-date {
+    font: bold 14px 'Helvetica';
+}
+
+div.table-container {
+    width: 99%;
+
+}
+
+td.lab_recipe {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.lab_sample_number {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;  
+}
+
+td.requested_by {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.for_customer {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.contact_info {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.category {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.projected_volume {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.volume_interval {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.material_application {
+    vertical-align: top;
+    font: bold 12px 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+}
+
+td.ingredient_notes_json {
+    vertical-align: top;
+    font: 11px 'Lucida Grande';
+}
+
+table.customred {
+    border-color: #000;
+    border: 1px solid #000;
+    border-radius: 6px;
+}
+
+
+table.customred,
+table.customred +  ul.pagination {
+    font: normal 11px 'Helvetica';
+}
+
+table.customred a:link,
+table.customred a:visited,
+table.customred + ul.pagination > li > a {
+    color: #5B80B2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+table.customred a:hover {
+    color: #036;
+}
+
+table.customred td,
+table.customred th {
+    padding: 3px;
+    line-height: 13px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    text-align: left;
+}
+
+table.customred thead th,
+table.customred thead td {
+    background: #000;
+    padding: 2px 5px;
+    font-size: 11px;
+    vertical-align: middle;
+    color: #FFF;
+}
+table.customred thead th {
+    font: bold 11px Helvetica;
+    color: white;
+}
+
+table.customred tfoot tr {
+    font: bold 12px Helvetica;
+}
+
+table.customred thead th > a:link,
+table.customred thead th > a:visited {
+    color: #fff;
+}
+
+table.customred tr.odd {
+    background-color: #eee;
+}
+
+table.customred tr.even {
+    background-color: white;
+}
+
+ul.pagination {
+    width: 90%;
+}
+
+table.customred + ul.pagination {
+    background: white url(../img/pagination-bg.gif) left 180% repeat-x;
+    overflow: auto;
+    margin: 0;
+    padding: 0px;
+    list-style: none;
+}
+
+table.customred + ul.pagination > li {
+    float: left;
+    line-height: 22px;
+    margin-left: 10px;
+}
+
+table.customred + ul.pagination > li:first-child {
+    margin-left: 0;
+}
+
+table.customred + ul.pagination > li.cardinality {
+    float: right;
+    color: #8d8d8d;
+}
+
+table.customred > tbody > tr > td > span.true,
+table.customred > tbody > tr > td > span.false {
+    background-position: top left;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 10px;
+    overflow: hidden;
+    text-indent: -200px;
+    width: 10px;
+}
+
+table.customred > tbody > tr > td > .missing {
+    background: transparent url(../img/missing.png) right center no-repeat;
+    color: #717171;
+    padding-right: 20px;
+}
+
+table.customred > tbody > tr > td > .missing:hover {
+    color: #333;
+}
+
+table.customred > tbody > tr > td > span.true {
+    background-image: url(../img/true.gif);
+}
+
+table.customred > tbody > tr > td > span.false {
+    background-image: url(../img/false.gif);
+}
+
+table.notes_pricing {
+    width: 99%;
+}
+
+table.notes_pricing td,
+table.notes_pricing th {
+    padding: 3px;
+    line-height: 13px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    text-align: left;
+}
+
+table.notes_pricing thead th,
+table.notes_pricing thead td {
+    background: #000;
+    padding: 2px 5px;
+    font-size: 11px;
+    vertical-align: middle;
+    color: #FFF;
+}
+table.notes_pricing thead th {
+    font: bold 11px Helvetica;
+    color: white;
+}
+
+table.headergray {
+    width: 99%;
+}
+
+table.headergray td,
+table.headergray th {
+    padding: 3px;
+    line-height: 13px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    text-align: left;
+}
+
+table.headergray thead th,
+table.headergray thead td {
+    background: #000;
+    padding: 2px 5px;
+    font-size: 11px;
+    vertical-align: middle;
+    color: #FFF;
+}
+table.headergray thead th {
+    font: bold 11px Helvetica;
+    color: white;
+}
+
+table.customgray,
+table.customgray {
+    font: normal 11px 'Helvetica';
+}
+
+table.customgray a:link,
+table.customgray a:visited,
+table.customgray > li > a {
+    color: #5B80B2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+table.customgray a:hover {
+    color: #036;
+}
+
+table.customgray {
+    width: 100%;
+}
+
+table.customgray td,
+table.customgray th {
+    line-height: 12px;
+    border-bottom: 1px solid #000;
+}
+
+table.customgray thead th,
+table.customgray thead td {
+    background: #000;
+    padding: 2px 5px;
+    font-size: 11px;
+    vertical-align: middle;
+    color: #FFF;
+}
+table.customgray thead th {
+    font: bold 11px Helvetica;
+    color: white;
+}
+
+table.customgray tfoot tr {
+    font: bold 11px Helvetica;
+}
+
+table.customgray thead th > a:link,
+table.customgray thead th > a:visited {
+    color: #fff;
+}
+
+table.customgray tr.odd {
+    background-color: #eee;
+}
+
+table.customgray tr.even {
+    background-color: white;
+}
+
+ul.pagination {
+    width: 90%;
+}
+
+table.customgray + ul.pagination {
+    background: white url(../img/pagination-bg.gif) left 180% repeat-x;
+    overflow: auto;
+    margin: 0;
+    padding: 0px;
+    list-style: none;
+}
+
+table.customgray + ul.pagination > li {
+    float: left;
+    line-height: 22px;
+    margin-left: 10px;
+}
+
+table.customgray + ul.pagination > li:first-child {
+    margin-left: 0;
+}
+
+table.customgray + ul.pagination > li.cardinality {
+    float: right;
+    color: #8d8d8d;
+}
+
+table.customgray > tbody > tr > td > span.true,
+table.customgray > tbody > tr > td > span.false {
+    background-position: top left;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 10px;
+    overflow: hidden;
+    text-indent: -200px;
+    width: 10px;
+}
+
+table.customgray > tbody > tr > td > .missing {
+    background: transparent url(../img/missing.png) right center no-repeat;
+    color: #717171;
+    padding-right: 20px;
+}
+
+table.customgray > tbody > tr > td > .missing:hover {
+    color: #333;
+}
+
+table.customgray > tbody > tr > td > span.true {
+    background-image: url(../img/true.gif);
+}
+
+table.customgray > tbody > tr > td > span.false {
+    background-image: url(../img/false.gif);
+}
+
+
+div.table-container {
+    display: inline-block;
+}
+
+table.info-heading {
+    width: 99%;
+    margin:0 auto;
+    font: bold 11px 'Helvetica';
+    color: white;
+    text-align: center;
+    background: #000;
+    border: 1px solid #000;
+    border-radius: 6px;
+}
+
+div.info-table {
+    width: 99%;
+    margin:0 auto;
+    padding-top: 2px;
+    font: bold 11px 'Helvetica';
+    text-align: center;
+    background: #FCFCFC url(../img/header-bg.png) left bottom repeat-x;
+    border: 1px solid #fff;
+    border-radius: 6px;
+}

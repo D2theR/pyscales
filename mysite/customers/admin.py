@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export import resources
 from django.contrib.auth.models import User
 
 # Register your models here.

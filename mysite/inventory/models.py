@@ -1,11 +1,10 @@
 
 from django.db import models
-from orders import models as order
 
 # Create your models here.
 class CompoundingChart(models.Model):
-    finished_product = models.ForeignKey(order.OrderItem, related_name='finished_product')
-    raw_material = models.ForeignKey(order.PO_Item, related_name='raw_material')
+    finished_product = models.ForeignKey('orders.OrderItem', related_name='finished_product')
+    raw_material = models.ForeignKey('orders.PO_Item', related_name='raw_material')
     tare_wt = models.DecimalField(max_digits=16, decimal_places=2, blank=True, null=True)
     amount_used = models.DecimalField(max_digits=16, decimal_places=2, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)

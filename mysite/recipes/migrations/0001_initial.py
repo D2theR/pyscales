@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             name='RecipeMixing',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('step', models.IntegerField(default=recipes.models.RecipeMixing.step_nums)),
+                ('step', models.IntegerField(default=1)),
                 ('category', models.CharField(choices=[('25G', '25G Ross'), ('75G', '75G Ross'), ('42ML', '42" Mill'), ('60ML', '60" Mill'), ('75L-T', '75L Tilt'), ('200MM-EXT', '200mm Extruder'), ('LAB-EXT', 'Lab Extruder'), ('130L-LF', '130L Littleford'), ('600L-LF', '600L Littleford'), ('1200L-LF', '1200L Littleford'), ('2000L-LF', '2000L Littleford'), ('HEN', 'Henschel'), ('DICE', 'Dicer'), ('OVEN', 'Oven'), ('PW', 'Pre-Weighed Bag'), ('BAGR', 'Auto Bagger'), ('OTHER', 'Other-See Notes')], max_length=64, null=True)),
                 ('step_form', models.CharField(choices=[('PWDR', 'Powder'), ('SLAB', 'Polymeric Slab'), ('5MM-CB', '5mm Cubes'), ('3MM-PLT', '3mm Pellets'), ('6MM-PLT', '6mm Pellets'), ('LQD', 'Liquid'), ('OTHER', 'Other-See Notes')], max_length=64, null=True)),
                 ('mix_time', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True, verbose_name='Mix Time(mins.)')),

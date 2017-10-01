@@ -1,0 +1,159 @@
+/** 
+ * theming styles
+ * 
+ */
+
+#content {
+    padding: 0;
+    margin: 5px;
+}
+
+#header {
+    background: url(../images/admin-tools.png) 0 0 repeat;
+
+    /* Reset the indents of django-flat-theme
+      (need to restore 40px on branding+user-tools instead) */
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#header #branding h1 {
+    margin: 0;
+    padding: 1px 1px;
+    text-indent: -9999px;
+    background: transparent url(../images/django.png) 0px 0px no-repeat;
+    height: 40px;
+    width: 120px;
+}
+
+#header #user-tools {
+    /* Old Django: 1.2em, flat theme: 40px; */
+    padding-right: 1.2em;
+}
+
+#bookmark-form {
+    clear: both;
+}
+
+div.breadcrumbs {
+    display: block;
+    padding: 10px 15px;
+    background: #2d2d2d;
+    font-size: 14px;
+    color: #ed3e41;
+    text-align: left;
+    border: 0;
+    background-position: 0 -8px;
+    border-bottom: 1px solid #ededed;
+}
+
+label {
+    font-weight: normal;
+    color: #666;
+    font-size: 12px;
+    text-align: left;
+}
+
+div.breadcrumbs a {
+    display: inline;
+}
+
+.inline-group .aligned label {
+    width: 65px;
+    text-align: left;
+    word-wrap: normal;
+}
+
+
+.module h2, .module caption, .inline-group h2 {
+    margin: 0;
+    padding: 0px;
+    font-weight: bolder;
+    font-size: 12px;
+    text-align: left;
+    background: #2d2d2d;
+    color: #fff;
+}
+
+.inline-related h3 {
+    margin: 0;
+    color: #666;
+    padding: 1px;
+    font-size: 12px;
+    background: #DDDDDD;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+}
+
+.form-row {
+    overflow: hidden;
+    padding: 2px;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.aligned label {
+    display: block;
+    padding: 1px;
+    width: 80px;
+    word-wrap: normal;
+    line-height: 1;
+    float: left;
+}
+
+.aligned label + p {
+    padding: 0px 1px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    margin-left: 90px;
+}
+
+.aligned p.file-upload {
+    margin-left: 95px; 
+}
+
+.aligned .form-row input {
+    margin-bottom: 0;
+    margin-left: 5px;
+    width: 75px;
+}
+
+input#id_project_folder {
+    margin-bottom: 0;
+    width: 175px;
+}
+
+fieldset .field-box {
+    float: left;
+    margin-right: 15px;
+    padding-left: 3px;
+}
+
+.module {
+    border: none;
+    margin-bottom: 5px;
+    background: #fff;
+}
+
+input, select, .form-row p, form .button {
+    margin: 0px 1px;
+    padding: 0px 0px;
+    vertical-align: middle;
+    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+    font-size: 11px;
+}
+
+.vLargeTextField, .vXMLLargeTextField {
+    width: 420px;
+    height: 30px;
+}
+
+thead.ingredient-header th{
+    color: white;
+    background: black;
+    border: 1px solid white; 
+}
+
+select[id^="id_recipe-"] {
+    width: 75%;
+}

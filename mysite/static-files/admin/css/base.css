@@ -238,20 +238,23 @@ p img, h1 img, h2 img, h3 img, h4 img, td img {
 /* TABLES */
 
 table {
-    border-collapse: collapse;
     border-color: #ccc;
+}
+
+table.ingredient-heading {
+    width:100%;
 }
 
 td, th {
     font-size: 13px;
     line-height: 16px;
-    border-bottom: 1px solid #eee;
+    border: 1px solid #eee;
     vertical-align: top;
-    padding: 8px;
+    padding: 2px;
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
-th {
+th{
     font-weight: 600;
     text-align: left;
 }

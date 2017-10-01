@@ -64,17 +64,6 @@ div.breadcrumbs a {
     word-wrap: normal;
 }
 
-
-.module h2, .module caption, .inline-group h2 {
-    margin: 0;
-    padding: 2px;
-    font-weight: bolder;
-    font-size: 12px;
-    text-align: left;
-    background: #2d2d2d;
-    color: #fff;
-}
-
 .inline-related h3 {
     margin: 0;
     color: #666;
@@ -114,7 +103,7 @@ div.breadcrumbs a {
 
 .aligned .form-row input {
     margin-bottom: 0;
-    width: 100px;
+    width: 60px;
 }
 
 input#id_project_folder {
@@ -132,6 +121,7 @@ fieldset .field-box {
     margin-bottom: 5px;
     background: #fff;
 }
+
 
 input, select, .form-row p, form .button {
     margin: 3px 0px;
@@ -154,4 +144,10 @@ select #id_recipe-0-ingredient {
 select .id_recipe_name {
     height: 25px;
     width: 420px;
+}
+
+    .ingredient_heading {
+    border-color: green;
+    border-style: double;
+
 }

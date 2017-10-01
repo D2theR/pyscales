@@ -1,0 +1,79 @@
+@page {
+    size: letter landscape;
+    margin: 1.27cm; 
+}
+body {
+    font-weight: 200;
+    font-size: 14px; 
+}
+.header {
+    font-size: 10px;
+    font-weight: 100;
+    text-align: center;
+    color: white;
+}
+.logo {
+    display: auto;
+    margin: auto;
+}
+.title {
+    font-size: 22px;
+    font-weight: 120;
+    text-align: left;
+}
+.title-table {
+    border-style: solid;
+    border-color: black;
+    background-color: black;
+    padding-top: 2px;
+    font-size: 12px;
+}
+.table-container {
+    border-style: solid;
+    border-color: black;
+    padding: 2px;
+    border-collapse: collapse;
+}
+
+.table-container th {
+    background-color: #000;
+    color: #fff;
+    text-align: left;
+    text-decoration: none;
+    vertical-align: bottom;
+}
+.recipe_table {
+    table-layout: auto;
+    font-size: 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.ingredients {
+    table-layout: auto;
+    border-collapse: collapse;
+    font-size: 11px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ingredients  {
+    color: black;
+    background-color: #fff;
+    font-size: 12px;
+}
+
+.ingredients td.supplier {
+    width: 35%;
+}
+.ingredients td.ingredient {
+    width: 40%;
+}
+
+.iuc_num.odd td {
+    background-color: pink;
+}
+.details {
+    padding: 10px 20px 0px 20px;
+    text-align: left !important;
+}

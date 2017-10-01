@@ -20,8 +20,19 @@ class FactoryOrderAdmin(admin.ModelAdmin):
 
 class PO_ItemInline(admin.TabularInline):
 	model = PO_Item
+	raw_id_fields = ['item_ordered']
 	fieldsets = [(None,{'fields':[('item_ordered','lot_number','lbs_ordered','lbs_received','date_received','lab_approval')]})]
 	extra = 1
+	template = 'admin/recipes/recipeingredients/edit_inline/tabular.html'
+
+# class PurchaseOrderAdmin(admin.ModelAdmin):
+# 	list_select_related = ['ordered_from']
+# 	list_display = ['po_number','ordered_from','date_ordered','comments']
+# 	fieldsets = [
+#         ('P.O. Information',{'fields': [('po_number','po_type','ordered_from','placed_with','date_ordered'),'comments']})    ]
+
+# 	readonly_fields = ('date_ordered',)
+# 	inlines = [PO_ItemInline]
 
 class PurchaseOrderAdmin(admin.ModelAdmin):
 	list_select_related = ['ordered_from']
@@ -32,5 +43,16 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
 	readonly_fields = ('date_ordered',)
 	inlines = [PO_ItemInline]
 
+class PO_ItemAdmin(admin.ModelAdmin):
+	list_select_related = ['order_number', 'item_ordered']
+	readonly_fields = ['lbs_used']
+	list_display = ['order_number', 'item_ordered', 'item_status', 'lot_number', 'lbs_ordered', 'lbs_used' ,'date_received', 'lab_approval']
+	search_fields = ['order_number__po_number', 'item_ordered__name', 'lot_number']
+	list_filter = ['item_status', 'lab_approval']
+
+	class Media:
+		js = ['admin/js/list_filter_collaspe.js']
+
 admin.site.register(FactoryOrder, FactoryOrderAdmin)
 admin.site.register(PurchaseOrder, PurchaseOrderAdmin)
+admin.site.register(PO_Item, PO_ItemAdmin)

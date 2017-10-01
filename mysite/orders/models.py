@@ -1,10 +1,12 @@
 from django.db import models
-
+from decimal import Decimal
+from django.db.models import Sum, F
 # Create your models here.
 from recipes import models as product
 from customers import models as customer
 from suppliers import models as supply
 from chemicals import models as items
+from inventory.models import CompoundingChart
 
 # Create your models here.
 
@@ -105,6 +107,13 @@ class PO_Item(models.Model):
 	def __str__(self):
 		return "%s | %s | %s" % (self.order_number, self.item_ordered, self.lot_number)
 
+	def _lbs_used(self):
+		total = CompoundingChart.objects.filter(raw_material_id=self.id).aggregate(Sum(F('amount_used')))
+		if total['amount_used__sum'] is None:
+			return str('0.00')
+		if isinstance(total['amount_used__sum'], Decimal):
+			return round(total['amount_used__sum'], 2)
+	lbs_used = property(_lbs_used)
 	class Meta:
 		unique_together = (('id','order_number','item_ordered'),)
 		verbose_name = "P.O. Item"

@@ -1,0 +1,16 @@
+{# admin/research/labsample/export_quotes/quotes.html #}
+{% load render_table from django_tables2 %}
+{% load static %}
+
+<!doctype html>
+<html>
+	<h1>
+		Quote Recipe
+	</h1>
+    <head>
+        <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table table %}
+    </body>
+</html>

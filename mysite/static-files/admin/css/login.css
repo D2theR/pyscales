@@ -5,8 +5,11 @@ body.login {
 }
 
 .login #header {
-    height: auto;
-    padding: 5px 16px;
+    background: url(/static/images/admin-tools.png) 0 0 repeat;
+
+    /* Reset the indents of django-flat-theme
+      (need to restore 40px on branding+user-tools instead) */
+    padding: 0px 125px;
 }
 
 .login #header h1 {
@@ -36,7 +39,7 @@ body.login {
 }
 
 .login .form-row {
-    padding: 4px 0;
+    padding: 4px 1px;
     float: left;
     width: 100%;
     border-bottom: none;

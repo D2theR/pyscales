@@ -10,15 +10,15 @@ class IngredientList(models.Model):
     category = models.CharField(max_length=256, blank=False, null=False,choices=[('RAW','Raw Material'),('FG','Finished Good'),('PKG','Packaging'),('LBL','Labeling')])
     name = models.CharField(max_length=64, blank=False, null=False)
     chemical_name = models.CharField(max_length=256, blank=False, null=True)
-    synonyms = models.CharField(max_length=300, blank=True)
-    customer_supplied = models.BooleanField(default=False)
+    synonyms = models.CharField(max_length=300, blank=True, null=True)
+    customer_supplied = models.BooleanField(default=False, verbose_name='CSM?')
     supplier = models.ForeignKey(supply.SupplierProfile, related_name='supplier')
-    manufacturer = models.CharField(max_length=96, blank=True)
+    manufacturer = models.CharField(max_length=96, blank=True, null=True)
     specific_gravity = models.DecimalField(max_digits=8, decimal_places=4)
-    origin_country = models.CharField(max_length=128, blank=True)
-    nafta_tariff = models.CharField(max_length=64, blank=True)
-    nafta_last_updated = models.DateField()
-    cas_number = models.CharField(max_length=64, blank=True)
+    origin_country = models.CharField(max_length=128, blank=True, null=True)
+    nafta_tariff = models.CharField(max_length=64, blank=True, null=True)
+    nafta_last_updated = models.DateField(null=True, blank=True)
+    cas_number = models.CharField(max_length=64, blank=True, null=True)
     approved_by = models.CharField(max_length=64, editable=False)
     date_approved = models.DateTimeField(auto_now_add=True, editable=False)
     comments = models.TextField(blank=True, null=True)
@@ -42,22 +42,22 @@ class IngredientList(models.Model):
 
 class ItemPricing(models.Model):
     item = models.ForeignKey(IngredientList, related_name='item')
-    packaging_type = models.CharField(max_length=256, blank=False, null=False,choices=[('BOX','Boxes'),('BAG','Bags'),('SKD', 'Skids'),('DRM','Drums'),('PLS','Pails'),('SS','Super-sack'), ('OTH','Other')])
-    unit_type = models.CharField(max_length=256, blank=True, null=True, choices=[('LBS','LBS'),('KGS','KGS')])
+    packaging_type = models.CharField(max_length=256, blank=False, null=False,choices=[('BOX','Boxes'),('BAG','Bags'),('SKD', 'Skids'),('DRM','Drums'),('PLS','Pails'),('TRK', 'Truck-load'),('SS','Super-sack'),('TOTE', 'Totes'), ('BALE', 'Bales'), ('OTH','Other')])
+    unit_type = models.CharField(max_length=256, blank=True, null=True, choices=[('LBS','LBS'),('KGS','KGS'), ('QTY','QTY'), ('OTH', 'Other')])
     min_qty = models.DecimalField(max_digits=16, decimal_places=3, blank=True, null=True, default=Decimal(0.000))
     max_qty = models.DecimalField(max_digits=16, decimal_places=3, blank=True, null=True, default=Decimal(0.000))
-    price = models.DecimalField(verbose_name="Price($)" ,max_digits=16, decimal_places=2, blank=True, null=True, default=Decimal(0.00))
+    price = models.DecimalField(verbose_name="Price($)" ,max_digits=16, decimal_places=3, blank=True, null=True, default=Decimal(0.00))
     best_price = models.BooleanField(default=False)
     lead_time = models.DecimalField(verbose_name="Lead Time(Days)",max_digits=12, decimal_places=1, blank=True, null=True, default=Decimal(0.00))
     fob_point = models.CharField(max_length=256, blank=True, null=True)
-    freight_type = models.CharField(max_length=256, blank=False, null=True, choices=[('CPU','CPU'),('DEL','Delivered'),('OTHER','Other')])
+    freight_type = models.CharField(max_length=256, blank=True, null=True, choices=[('CPU','CPU'),('DEL','Delivered'),('OTHER','Other')])
     freight_cost = models.DecimalField(max_digits=9, decimal_places=2, blank=True, null=True, default=Decimal(0.000))
     notes = models.TextField(blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True, editable=False)
+    date = models.DateField(blank=False, null=False)
     
 
     def __str__(self):
-        return "%s" % (self.item)
+        return "%s" % (self.lead_time)
 
     class Meta:
         managed = True

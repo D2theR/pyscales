@@ -32,12 +32,19 @@ ALLOWED_HOSTS = ['127.0.0.1','10.119.82.105','192.168.100.13','192.168.254.13','
 # Application definition
 
 INSTALLED_APPS = (
+    'django_tables2',
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', 
+    'import_export',
+    'channels',
     'chemicals',
     'suppliers',
     'customers',
@@ -78,10 +85,12 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'loaders':[
-                'admin_tools.template_loaders.Loader',
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]
+                ('django.template.loaders.cached.Loader', [
+                    'admin_tools.template_loaders.Loader',
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
         },
     },
 ]
@@ -96,8 +105,18 @@ DATABASES = {
         'NAME': 'pdi-sample-quote',
         'USER': 'django',
         'PASSWORD': 'research&destroy',
-        'HOST': '192.168.254.111',
+        'HOST': '192.168.30.119',
         'PORT': '5432',
+    }
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        'ROUTING': 'pyscales.routing.channel_routing',
     }
 }
 
@@ -133,12 +152,13 @@ ADMIN_TOOLS_MENU = 'mysite.menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'mysite.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'mysite.dashboard.CustomAppIndexDashboard'
 ADMIN_TOOLS_THEMING_CSS = 'css/theming.css'
+#DJANGO_TABLES2_TEMPLATE = 'django_tables2/table.html'
 WSGI_APPLICATION = 'mysite.wsgi.application'
 MEDIA_ROOT = BASE_DIR+'/labsamples/'
 MEDIA_URL = '/labsamples/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static-files/")
-STATICFILES_DIRS = [STATIC_ROOT+'admin/',STATIC_ROOT+'admin_tools/']
+STATICFILES_DIRS = [STATIC_ROOT+'admin/',STATIC_ROOT+'admin_tools/', STATIC_ROOT+'django_tables2/']
 STATICFILES_FINDER = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
