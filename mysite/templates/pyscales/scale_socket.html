@@ -1,22 +1,44 @@
 {% extends 'pyscales/pyscales.html' %}
 
-{% block content %}{% endblock content %}
+{% block content %}
+<a href="{% url 'pyscales:log_out' %}">Log out</a>
+  <br>
+  <ul>
+    {% for user in users %}
+      <!-- NOTE: We escape HTML to prevent XSS attacks. -->
+      <li data-username="{{ user.username|escape }}">
+        {{ user.username|escape }}: {{ user.status|default:'Offline' }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock content %}
 
 {% block script %}
-        <script>
-            var ws = new WebSocket('ws://' + window.location.host + '/scales/'),
-                messages = document.createElement('ul'),
-                message = document.createElement('li');
-                ws.onopen = function open() {
-                    console.log('WebSockets connection created.');
-                        };
-            ws.onmessage = function (event) {
-                var messages = document.getElementsByTagName('ul')[0],
-                    content = document.createTextNode(event.data);
-                message.innerHTML = "";
-                message.appendChild(content);
-                messages.appendChild(message);
+    <script>
+         var socket = new WebSocket('ws://' + window.location.host + '/scale/');
+
+            socket.onopen = function open() {
+              console.log('WebSockets connection created.');
             };
-            document.body.appendChild(messages);           
-        </script>
+
+            socket.onmessage = function message(event) {
+              var data = JSON.parse(event.data);
+              // NOTE: We escape JavaScript to prevent XSS attacks.
+              var username = encodeURI(data['username']);
+              var user = $('li').filter(function () {
+                return $(this).data('username') == username;
+              });
+
+              if (data['is_logged_in']) {
+                user.html(username + ': Online');
+              }
+              else {
+                user.html(username + ': Offline');
+              }
+            };
+
+            if (socket.readyState == WebSocket.OPEN) {
+              socket.onopen();
+            }    
+    </script>
 {% endblock script %}
