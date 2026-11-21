@@ -1,0 +1,15 @@
+# Old Wi-Fi/MQTT version (contains credentials), kept locally only
+backup/
+
+# Credentials, if any are added later
+secrets.py
+
+# Local copy of the manual (link to Rice Lake instead of redistributing it)
+*.pdf
+
+# Python / editor clutter
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
